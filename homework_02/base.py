@@ -18,6 +18,10 @@ class Vehicle(ABC):
                f'fuel = {self._fuel}, fuel_consumption = {self._fuel_consumption})'
 
     @property
+    def started(self):
+        return self._started
+
+    @property
     def weight(self):
         return self._weight
 
@@ -46,7 +50,7 @@ class Vehicle(ABC):
         """
         Set started as True if fuel is a positive number.
         """
-        if not self._started and self._fuel:
+        if self._fuel:
             self._started = True
         else:
             raise LowFuelError(self._fuel)
@@ -60,8 +64,6 @@ class Vehicle(ABC):
         fuel_left = self._fuel - self._fuel_consumption * float_distance / 100
         if self._started and fuel_left >= 0:
             self._fuel = fuel_left
-        elif not self._started:
-            raise NotStartedVehicle
         else:
             raise NotEnoughFuel(self._fuel)
 

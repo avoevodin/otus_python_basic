@@ -9,12 +9,11 @@ class Plane(Vehicle):
     """
     Describes a plane entity.
     """
-    def __init__(self, *args, max_cargo=1500):
+    def __init__(self, *args, cargo=0, max_cargo=1500):
         # TODO is it correct?
-        parent = super()
-        parent.__init__(*args)
-        self._cargo = 0
-        self._max_cargo = parent.get_float_value(max_cargo)
+        super().__init__(*args)
+        self._cargo = cargo
+        self._max_cargo = super().get_float_value(max_cargo)
 
     def __repr__(self):
         parent_repr = super().__repr__()
@@ -47,8 +46,8 @@ if __name__ == '__main__':
     p.load_cargo(500)
     p.load_cargo(100)
     print(p)
-    cargo = p.remove_all_cargo()
-    print(cargo)
+    tmp_cargo = p.remove_all_cargo()
+    print(tmp_cargo)
     print(p)
 
 

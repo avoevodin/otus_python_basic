@@ -30,6 +30,6 @@ class Car(Vehicle):
 
 if __name__ == '__main__':
     c = Car(100, 20, 30)
-    eng = Engine(2000, 4)
+    eng = Engine(2000)
     c.set_engine(eng)
     print(c)

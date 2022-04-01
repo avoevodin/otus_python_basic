@@ -10,4 +10,4 @@ class Engine:
     Describes an engine entity.
     """
     volume: float
-    pistons: int
+    pistons: int = 4

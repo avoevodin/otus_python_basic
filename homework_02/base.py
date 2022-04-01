@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
-from exceptions import LowFuelError, NotStartedVehicle, NotEnoughFuel
+from abc import ABC
+
+from exceptions import LowFuelError, NotEnoughFuel
 
 
 class Vehicle(ABC):

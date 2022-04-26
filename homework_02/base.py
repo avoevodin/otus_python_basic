@@ -1,6 +1,6 @@
 from abc import ABC
 
-from exceptions import LowFuelError, NotEnoughFuel
+from homework_02.exceptions import LowFuelError, NotEnoughFuel
 
 
 class Vehicle(ABC):
@@ -62,8 +62,8 @@ class Vehicle(ABC):
         Decreases fuel depending on the distance travelled.
         """
         float_distance = self.get_float_value(distance)
-        fuel_left = self._fuel - self._fuel_consumption * float_distance / 100
-        if self._started and fuel_left >= 0:
+        fuel_left = self._fuel - self._fuel_consumption * float_distance
+        if fuel_left >= 0:
             self._fuel = fuel_left
         else:
             raise NotEnoughFuel(self._fuel)

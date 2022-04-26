@@ -1,18 +1,19 @@
 """
 создайте класс `Plane`, наследник `Vehicle`
 """
-from base import Vehicle
-from exceptions import CargoOverload
+from homework_02.base import Vehicle
+from homework_02.exceptions import CargoOverload
 
 
 class Plane(Vehicle):
     """
     Describes a plane entity.
     """
-    def __init__(self, *args, cargo=0, max_cargo=1500):
+    def __init__(self, weight=1500, fuel=60,
+                 fuel_consumption=5, max_cargo=1500):
         # TODO is it correct?
-        super().__init__(*args)
-        self._cargo = cargo
+        super().__init__(weight, fuel, fuel_consumption)
+        self._cargo = 0
         self._max_cargo = super().get_float_value(max_cargo)
 
     def __repr__(self):
@@ -22,6 +23,10 @@ class Plane(Vehicle):
     @property
     def cargo(self):
         return self._cargo
+
+    @cargo.setter
+    def cargo(self, value):
+        self._cargo = self.get_float_value(value)
 
     @property
     def max_cargo(self):
@@ -48,6 +53,4 @@ if __name__ == '__main__':
     print(p)
     tmp_cargo = p.remove_all_cargo()
     print(tmp_cargo)
-    print(p)
-
 

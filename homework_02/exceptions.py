@@ -36,8 +36,8 @@ class CargoOverload(Exception):
     """
     Exception raises when the vehicle is overloaded with cargo.
     """
-    def __init__(self, cargo, max_cargo,
-                 message="The vehicle is overload."):
+    def __init__(self, cargo=0, max_cargo=0,
+                 message="The vehicle is overloaded."):
         self.cargo = cargo
         self.max_cargo = max_cargo
         self.message = message

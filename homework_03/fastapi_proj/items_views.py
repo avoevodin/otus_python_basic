@@ -1,14 +1,46 @@
-from typing import Union, List
+from typing import Union, List, Set
 
-from fastapi import APIRouter, Query, Path
-from pydantic import BaseModel, Required
+from fastapi import APIRouter, Query, Path, Body, Cookie, Header
+from pydantic import BaseModel, Required, Field, HttpUrl
+
+
+class Image(BaseModel):
+    url: HttpUrl
+    name: str
 
 
 class Item(BaseModel):
     name: str
-    description: Union[str, None] = None
-    price: float
-    tax: Union[float, None] = None
+    description: Union[str, None] = Field(
+        default=None, title="The description of the item", max_length=300, example="Foo"
+    )
+    price: float = Field(gt=0, description="The price must be greater than 0")
+    tax: Union[float, None] = (None,)
+    tags: list[str] = []
+    labels: Set[str] = set()
+    images: Union[list[Image], None] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Foo",
+                "description": "A very nice Item",
+                "price": 24.8,
+                "tax": 4.8,
+                "tags": ["nice", "very nice", "nice"],
+                "labels": ["Bazz", "Eggs"],
+                "images": [
+                    {
+                        "url": "https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__340.jpg",
+                        "name": "Main image",
+                    },
+                    {
+                        "url": "https://www.gettyimages.com/gi-resources/images/500px/983794168.jpg",
+                        "name": "Additional image",
+                    },
+                ],
+            }
+        }
 
 
 class User(BaseModel):
@@ -26,12 +58,37 @@ def read_items(skip: int = 0, limit: int = Query(default=Required)):
     return fake_items_db[skip : skip + limit]
 
 
+@router.get("/cookies")
+def read_items_cookies(ads_in: Union[str, None] = Cookie(default=None)):
+    return {"ads_in": ads_in}
+
+
+@router.get("/headers")
+def read_items_headers(user_agent: Union[str, None] = Header(default=None)):
+    return {"User-Agent": user_agent}
+
+
 @router.get("/{item_id}")
 def root(
     # * allows use any order of default and non-default params
     *,
     item_id: int = Path(
-        default=Required, title="The ID of the item to get", ge=1, lt=1000
+        default=Required,
+        title="The ID of the item to get",
+        ge=1,
+        lt=1000,
+        examples={
+            "normal": {
+                "summary": "A normal example",
+                "description": "A **normal** item id works correctly.",
+                "value": 1,
+            },
+            "invalid": {
+                "summary": "An invalid example",
+                "description": "An **invalid** item id doesn't work correctly.",
+                "value": "Foo",
+            },
+        },
     ),
     needy: str,
     q: Union[str, None] = Query(
@@ -88,7 +145,8 @@ def create_item(item: Item):
 @router.put("/{item_id}")
 def create_item_with_id(
     item_id: int,
-    item: Item,
+    # embed - item will be expected as a key item.
+    item: Item = Body(embed=True),
     # ... - Ellipsis declare that a value is required.
     # In this case you must pass the None value.
     q: Union[str, None] = Query(
@@ -115,8 +173,19 @@ def update_item(
     q: Union[str, None] = None,
     item: Union[Item, None] = None,
     user: Union[User, None] = None,
+    # use that param as a body key
+    importance: int = Body(gt=0),
 ):
-    results = {"item_id": item_id}
+    """
+
+    :param item_id:
+    :param q:
+    :param item:
+    :param user:
+    :param importance:
+    :return:
+    """
+    results = {"item_id": item_id, "importance": importance}
     if q:
         results.update({"q": q})
     if item:
@@ -125,3 +194,13 @@ def update_item(
         results.update({"user": user})
 
     return results
+
+
+@router.post("/multiple_creating")
+def create_multiple_items(items: list[Item]):
+    """
+
+    :param items:
+    :return:
+    """
+    return items

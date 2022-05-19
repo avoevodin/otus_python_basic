@@ -1,6 +1,7 @@
 from typing import Union
+from uuid import uuid4
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserBase(BaseModel):
@@ -15,4 +16,18 @@ class UserIn(UserBase):
 
 
 class UserOut(UserBase):
-    pass
+    id: int = Field(..., example=123)
+
+
+def generate_token():
+    """
+
+    :return:
+    """
+    token = str(uuid4())
+    return token
+
+
+class UserInDB(UserOut):
+    hashed_password: str
+    token: str = Field(default_factory=generate_token)

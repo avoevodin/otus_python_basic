@@ -14,14 +14,21 @@
 """
 
 import asyncio
+import os
 from pprint import pprint
 from typing import List
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 
 from jsonplaceholder_requests import fetch_posts_data, fetch_users_data
 from models import User, Post
-from models.base import Session as async_session
+from models.base import Session as async_session, async_engine, Base
+
+
+async def create_tables(async_engine: AsyncEngine):
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
 
 
 async def create_users(session: AsyncSession, users_data: List[dict]) -> List[User]:
@@ -64,11 +71,14 @@ async def create_users_and_posts_in_db(
 
 
 async def async_main():
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        await create_tables(async_engine)
+
     posts, users = await asyncio.gather(fetch_posts_data(), fetch_users_data())
-    print(">>>>>>> posts:")
-    pprint(posts)
-    print(">>>>>>> users:")
-    pprint(users)
+    # print(">>>>>>> posts:")
+    # pprint(posts)
+    # print(">>>>>>> users:")
+    # pprint(users)
 
     await create_users_and_posts_in_db(users, posts)
 

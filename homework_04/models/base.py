@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column
+from sqlalchemy import Integer, Column, create_engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, AsyncSession
 from sqlalchemy.orm import declarative_base, declared_attr, sessionmaker
 
@@ -20,4 +20,6 @@ async_engine: AsyncEngine = create_async_engine(
     config.PG_CONN_URI, echo=config.PG_DB_ECHO
 )
 Session = sessionmaker(async_engine, expire_on_commit=False, class_=AsyncSession)
-Base = declarative_base(cls=Base)
+
+sync_engine = create_engine(url=config.PG_SYNC_CONN_URI, echo=config.PG_DB_ECHO)
+Base = declarative_base(bind=sync_engine, cls=Base)

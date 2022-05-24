@@ -35,6 +35,7 @@ async def create_users(session: AsyncSession, users_data: List[dict]):
         )
         users.append(user)
     session.add_all(users)
+    return users
 
 
 async def create_posts(session: AsyncSession, posts_data: List[dict]):
@@ -48,12 +49,16 @@ async def create_posts(session: AsyncSession, posts_data: List[dict]):
         )
         posts.append(post)
     session.add_all(posts)
+    return posts
 
 
-async def create_users_and_posts_in_db(users: List[dict], posts: List[dict]):
+async def create_users_and_posts_in_db(users_data: List[dict], posts_data: List[dict]):
     async with async_session() as session:  # type: AsyncSession
-        await asyncio.gather(create_posts(session, posts), create_users(session, users))
+        posts, users = await asyncio.gather(
+            create_posts(session, posts_data), create_users(session, users_data)
+        )
         await session.commit()
+        return posts, users
 
 
 async def async_main():

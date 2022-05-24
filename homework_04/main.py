@@ -26,12 +26,23 @@ from models.base import Session as async_session, async_engine, Base
 
 
 async def create_tables(async_engine: AsyncEngine):
+    """
+    Creates tables for tests
+    :param async_engine:
+    :return:
+    """
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
 
 async def create_users(session: AsyncSession, users_data: List[dict]) -> List[User]:
+    """
+    Creates users in db by user data from jsonplaceholder.
+    :param session:
+    :param users_data:
+    :return:
+    """
     users = []
     for user_data in users_data:
         user = User(
@@ -46,6 +57,12 @@ async def create_users(session: AsyncSession, users_data: List[dict]) -> List[Us
 
 
 async def create_posts(session: AsyncSession, posts_data: List[dict]) -> List[Post]:
+    """
+    Creates posts in db by posts data from jsonplaceholder.
+    :param session:
+    :param posts_data:
+    :return:
+    """
     posts = []
     for post_data in posts_data:
         post = Post(
@@ -62,6 +79,12 @@ async def create_posts(session: AsyncSession, posts_data: List[dict]) -> List[Po
 async def create_users_and_posts_in_db(
     users_data: List[dict], posts_data: List[dict]
 ) -> (List[Post], List[User]):
+    """
+    Runs methods which create users and posts in db with data from jsonplaceholder
+    :param users_data:
+    :param posts_data:
+    :return:
+    """
     async with async_session() as session:  # type: AsyncSession
         posts, users = await asyncio.gather(
             create_posts(session, posts_data), create_users(session, users_data)
@@ -71,19 +94,29 @@ async def create_users_and_posts_in_db(
 
 
 async def async_main():
+    """
+    Fetches posts and users data from jsonplaceholder and than
+    creates them in the DB. Also creates tables in DB if tests
+    are run.
+    :return:
+    """
     if "PYTEST_CURRENT_TEST" in os.environ:
         await create_tables(async_engine)
 
     posts, users = await asyncio.gather(fetch_posts_data(), fetch_users_data())
-    # print(">>>>>>> posts:")
-    # pprint(posts)
-    # print(">>>>>>> users:")
-    # pprint(users)
+    print(">>>>>>> posts:")
+    pprint(posts)
+    print(">>>>>>> users:")
+    pprint(users)
 
     await create_users_and_posts_in_db(users, posts)
 
 
 def main():
+    """
+    The main method.
+    :return:
+    """
     asyncio.run(async_main())
 
 

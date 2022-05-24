@@ -11,6 +11,10 @@ if TYPE_CHECKING:
 
 
 class Post(TimestampMixin, Base):
+    """
+    The model of post with users model relation.
+    """
+
     title = Column(String(200), nullable=False)
     body = Column(Text, nullable=False, default="", server_default="")
 

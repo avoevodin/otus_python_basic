@@ -10,6 +10,10 @@ if TYPE_CHECKING:
 
 
 class User(TimestampMixin, Base):
+    """
+    The model of user with posts model relation.
+    """
+
     name = Column(String(100), unique=True)
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(80), unique=True, nullable=False)

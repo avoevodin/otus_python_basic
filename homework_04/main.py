@@ -24,7 +24,7 @@ from models import User, Post
 from models.base import Session as async_session
 
 
-async def create_users(session: AsyncSession, users_data: List[dict]):
+async def create_users(session: AsyncSession, users_data: List[dict]) -> List[User]:
     users = []
     for user_data in users_data:
         user = User(
@@ -38,7 +38,7 @@ async def create_users(session: AsyncSession, users_data: List[dict]):
     return users
 
 
-async def create_posts(session: AsyncSession, posts_data: List[dict]):
+async def create_posts(session: AsyncSession, posts_data: List[dict]) -> List[Post]:
     posts = []
     for post_data in posts_data:
         post = Post(
@@ -52,7 +52,9 @@ async def create_posts(session: AsyncSession, posts_data: List[dict]):
     return posts
 
 
-async def create_users_and_posts_in_db(users_data: List[dict], posts_data: List[dict]):
+async def create_users_and_posts_in_db(
+    users_data: List[dict], posts_data: List[dict]
+) -> (List[Post], List[User]):
     async with async_session() as session:  # type: AsyncSession
         posts, users = await asyncio.gather(
             create_posts(session, posts_data), create_users(session, users_data)

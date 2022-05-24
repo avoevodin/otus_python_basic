@@ -14,8 +14,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from homework_04.models.base import Base
-import homework_04.config as app_config
+from models.base import Base
+import config as app_config
 
 # add your model's MetaData object here
 # for 'autogenerate' support

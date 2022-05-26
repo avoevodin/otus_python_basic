@@ -1,10 +1,12 @@
+from typing import Any
+
 import aiohttp
 
 USERS_DATA_URL = "https://jsonplaceholder.typicode.com/users"
 POSTS_DATA_URL = "https://jsonplaceholder.typicode.com/posts"
 
 
-async def fetch_json(data_url) -> dict:
+async def fetch_json(data_url) -> Any:
     """
     Fetch json data from url.
     :param data_url:

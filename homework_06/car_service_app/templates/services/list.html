@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+  List of services
+{% endblock %}
+
+{% block body %}
+  <h1>Services:</h1>
+  {% if services %}
+    <ul class="list-group">
+      {% for service in services %}
+        <li class="list-group-item">
+          <a class="text-decoration-none" href="{{ url_for('services_app.details', service_id=service.id) }}">
+            {{ service.name }}
+          </a>
+          {% if service.free_car_wash %}
+            <span class="badge bg-success">Free wash</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div><strong>No services...</strong></div>
+  {% endif %}
+  <br>
+  <div>
+    <a class="btn btn-primary" href="{{ url_for('services_app.add') }}">Add service</a>
+  </div>
+{% endblock %}

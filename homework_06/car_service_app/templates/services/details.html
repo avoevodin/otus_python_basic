@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Service #{{ service.id }}
+{% endblock %}
+
+{% block body %}
+  <div class="card" style="width: 18rem;">
+    <img src="{{ service.image }}" class="card-img-top" alt="service image">
+    <div class="card-body">
+      <h5 class="card-title">
+        Service {{ service.name }}
+        {% if service.free_car_wash %}
+          <span class="badge bg-success">Free wash</span>
+        {% endif %}
+      </h5>
+      <p class="card-text">{{ service.desctiption }}</p>
+      <div>
+        <a href="{{ url_for('services_app.list') }}" class="btn btn-primary btn-sm">Back to services list</a>
+        <button
+          type="button"
+          class="btn btn-danger btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#modal-del-service"
+        >
+          Delete
+        </button>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="modal-del-service" tabindex="-1" aria-labelledby="modal-delete-service-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-del-service-title">Delete product #{{ service.id }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Delete service <code>{{ service.name }}</code>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="delete-product" onclick="deleteItem()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/serviceDetails.js') }}"></script>
+{% endblock %}

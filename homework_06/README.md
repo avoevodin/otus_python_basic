@@ -12,3 +12,11 @@
 - в приложении есть возможность добавить записи, они сохраняются в БД
 - в приложении есть страница, которая выдаёт доступные записи (вытаскивает из БД)
 - Flask приложение настроено для запуска в production режиме (uwsgi, nginx, gunicorn) 
+
+
+# README
+#### Car service app with postgres db and uwsgi-nginx flask app
+## Install
+```shell
+docker compose up -d
+```

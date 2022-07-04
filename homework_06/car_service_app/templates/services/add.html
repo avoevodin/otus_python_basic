@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Add service
+{% endblock %}
+
+{% block body %}
+  <h1>Add service</h1>
+  <form method="post" class="d-flex flex-column container-fluid">
+    <div class="d-flex flex-column">
+      {{ form.hidden_tag() }}
+      {% for field in form %}
+        {% if field.type == "BooleanField" %}
+          <div class="form-check my-2">
+            {{ field.label(class="form-check-label") }}
+            {{ field(class="form-check-input") }}
+          </div>
+        {% elif field.type != "CSRFTokenField" %}
+          <div class="mb-2">
+            {{ field.label(class="form-label") }}
+            {{ field(size=20, class="form-control", placeholder=field.placeholder) }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary mb-3 col-2 align-self-center">Add</button>
+  </form>
+{% endblock %}

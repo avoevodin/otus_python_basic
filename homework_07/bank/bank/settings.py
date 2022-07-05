@@ -26,9 +26,15 @@ SECRET_KEY = "django-insecure-zplzhplhw&810pk!4!tvj02^khb-wl38lqxp!awtr&#z_7)_ti
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "*",
+    "127.0.0.1",
+    "localhost",
+    "0.0.0.0",
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 # Application definition
 
@@ -53,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "bank.urls"

@@ -6,4 +6,7 @@ from .models import Client
 
 def index(request: HttpRequest):
     clients = Client.objects.order_by("-id").all()
-    print(clients)
+    context = {
+        "clients": clients,
+    }
+    return render(request, "clients/index.html", context=context)

@@ -8,7 +8,19 @@
   <h1>Clients:</h1>
   <ul>
     {% for client in clients %}
-      <li>{{ client }} (birthday on {{ client.birthday }})</li>
+      {% with income=client.details.income %}
+      <li>
+        <a href="{% url 'clients:details' client.id %}">
+          {{ client }}
+        </a>
+        (birthday on {{ client.birthday }}) with
+        {% if income %}
+          income ₽{{ income }}
+        {% else %}
+          no income data
+        {% endif %}
+      </li>
+      {% endwith %}
     {% endfor %}
   </ul>
 {% endblock %}

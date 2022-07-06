@@ -8,7 +8,7 @@
   <h1>Clients:</h1>
   <ul>
     {% for client in clients %}
-      <li>{{ client }}</li>
+      <li>{{ client }} (birthday on {{ client.birthday }})</li>
     {% endfor %}
   </ul>
 {% endblock %}

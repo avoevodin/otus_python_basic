@@ -5,6 +5,11 @@ from .models import Client
 
 
 def index(request: HttpRequest):
+    """
+    TODO
+    :param request:
+    :return:
+    """
     clients = Client.objects.order_by("-id").all()
     context = {
         "clients": clients,

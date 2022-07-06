@@ -25,6 +25,10 @@ class Client(models.Model):
 
 
 class ClientDetail(models.Model):
+    """
+    TODO
+    """
+
     client = models.OneToOneField(
         Client,
         primary_key=True,

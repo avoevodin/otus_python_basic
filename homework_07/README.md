@@ -29,3 +29,8 @@ python manage.py runserver
 ```shell
 python manage.py fill_db_with_fake_data
 ```
+`
+* To use django-debug-toolbar run:`
+```shell
+pip install django-debug-toolbar
+```
